@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "7c280470-a649-4679-9d73-c376a01a75c7",
+		"name": "Trial",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24760132"
+	},
+	"item": [
+		{
+			"name": "Get_Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Verify Status Code\",function(){\r",
+							"  \r",
+							"   pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Verify Status Code\",function(){\r",
+							"  \r",
+							"   pm.response.to.have.status(201);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n  \"first_name\": \"sample string 2\",\r\n  \"middle_name\": \"sample string 3\",\r\n  \"last_name\": \"sample string 4\",\r\n  \"date_of_birth\": \"sample string 5\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Specific_Student",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var firstName = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"console.log(firstName)\r",
+							"pm.environment.set(\"firstName\",firstName)\r",
+							"\r",
+							"\r",
+							"var middleName = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"console.log(middleName)\r",
+							"pm.environment.set(\"middleName\",middleName)\r",
+							"\r",
+							"var lastName = pm.variables.replaceIn(\"{{$randomLastName}}\")\r",
+							"console.log(lastName)\r",
+							"pm.environment.set(\" lastName\",lastName)\r",
+							"\r",
+							"const moment =require('moment')\r",
+							"const today =moment()\r",
+							"var checkin =today.format(\"YYYY-MM-DD\")\r",
+							"\r",
+							"console.log(checkin)\r",
+							"pm.environment.set(\" checkin\",checkin)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Verify Status Code\",function(){\r",
+							"   pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"firstName Validation\",function(){\r",
+							"   const jsondata = pm.response.json()[0];\r",
+							"   pm.expect(jsondata.firstName).to.eql(pm.environment.get(\"firstName\"));\r",
+							"})\r",
+							"\r",
+							"pm.test(\"lastName Validation\",function(){\r",
+							"   pm.expect(jsondata.lastName).to.eql(pm.environment.get(\"lastName\"));\r",
+							"})\r",
+							"\r",
+							"pm.test(\"MiddleName Validation\",function(){\r",
+							"   pm.expect(jsondata.middle_name).to.eql(pm.environment.get(\"middleName\"));\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/studentsDetails/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"studentsDetails",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
